@@ -52,8 +52,14 @@ const visitorWidget = document.getElementById('visitor-widget');
 
 // ===================== VISITOR COUNTER =====================
 async function initializeVisitorCounter() {
+    const setVisitorStatus = message => {
+        visitorStatus.textContent = message;
+        visitorWidget.title = message;
+    };
+
     if (typeof Counter !== 'function') {
-        visitorStatus.textContent = 'সার্ভিস পাওয়া যাচ্ছে না';
+        visitorCount.textContent = '—';
+        setVisitorStatus('সার্ভিস পাওয়া যাচ্ছে না');
         visitorWidget.classList.add('is-offline');
         return;
     }
@@ -81,7 +87,7 @@ async function initializeVisitorCounter() {
             ? await counter.get('total-visits')
             : await counter.up('total-visits');
         renderCount(result);
-        visitorStatus.textContent = 'স্বয়ংক্রিয়';
+        setVisitorStatus('স্বয়ংক্রিয়');
         visitorWidget.classList.remove('is-offline');
 
         if (!alreadyCounted) {
@@ -95,17 +101,18 @@ async function initializeVisitorCounter() {
         window.setInterval(() => {
             if (document.visibilityState === 'visible') {
                 refreshCount().catch(() => {
-                    visitorStatus.textContent = 'আপডেট হচ্ছে না';
+                    setVisitorStatus('আপডেট হচ্ছে না');
                     visitorWidget.classList.add('is-offline');
                 });
             }
         }, 30000);
     } catch (error) {
-        visitorStatus.textContent = error.status === 404
+        visitorCount.textContent = '—';
+        setVisitorStatus(error.status === 404
             ? 'ওয়ার্কস্পেস নেই'
             : error.status === 401 || error.status === 403
                 ? 'অনুমতি নেই'
-                : 'সংযোগ নেই';
+                : 'সংযোগ নেই');
         visitorWidget.classList.add('is-offline');
         console.error('Visitor counter could not be loaded:', error);
     }
