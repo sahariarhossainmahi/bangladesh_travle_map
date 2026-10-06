@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="bn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>আমি ঘুরি সারা বাংলাদেশ</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- ===================== SECTION 1: HEADER ===================== -->
+    <header class="site-header">
+        <div class="header-inner">
+            <div class="header-flag"></div>
+            <div class="header-text">
+                <h1>আমি ঘুরি সারা বাংলাদেশ</h1>
+                <p>বাংলাদেশের ৬৪ জেলায় আপনার ভ্রমণের গল্প</p>
+            </div>
+        </div>
+        <span class="photo-credit" id="photo-credit">ছবি: Bandarban</span>
+    </header>
+
+    <!-- ===================== SECTION 2: DISTRICT LIST ===================== -->
+    <section class="district-section">
+        <div class="container">
+            <h2 class="section-title">আপনি যেসব জেলায় ঘুরেছেন</h2>
+            <p class="section-subtitle">জেলার নাম অথবা মানচিত্রে চাপ দিয়ে ভ্রমণ করা জেলা বেছে নিন</p>
+            <div class="district-grid" id="district-buttons"></div>
+        </div>
+    </section>
+
+    <!-- ===================== SECTION 3: MAP + STATS ===================== -->
+    <section class="map-section" id="export-container">
+        <div class="container">
+            <div class="map-layout">
+
+                <div class="map-container">
+                    <div class="map-heading">
+                        <div class="profile-card">
+                            <button class="profile-photo-wrap" id="photo-wrap" type="button" aria-label="ছবি যোগ করুন">
+                                <img id="profile-photo" src="" alt="আপনার প্রোফাইল ছবি" style="display:none;">
+                                <span class="photo-placeholder" id="photo-placeholder">
+                                    <span aria-hidden="true">+</span>
+                                    <small>ছবি</small>
+                                </span>
+                                <input type="file" id="photo-input" accept="image/*" hidden>
+                            </button>
+                            <input type="text" id="user-name" class="name-input" placeholder="আপনার নাম"
+                                maxlength="30" aria-label="আপনার নাম">
+                        </div>
+
+                    </div>
+                    <div class="map-title">
+                        <h2>আমার ভ্রমণ মানচিত্র</h2>
+                        <p>জেলা বেছে নিন, মানচিত্রে রঙ দেখুন</p>
+                        <a class="map-source" href="https://ovirahman.github.io/Bangladesh-interactive-map/"
+                            target="_blank" rel="noreferrer">মানচিত্রের উৎস: Ovi Rahman</a>
+                    </div>
+                    <div class="progress-card" aria-label="ভ্রমণের অগ্রগতি">
+                        <div class="progress-header">
+                            <span class="progress-label">ভ্রমণ সম্পন্ন</span>
+                            <span class="progress-big" id="progress-percent">0%</span>
+                        </div>
+                        <div class="progress-bar-bg">
+                            <div class="progress-bar-fill" id="progress-bar"></div>
+                        </div>
+                        <p class="progress-text" id="progress-text">৬৪ জেলার মধ্যে ০টি ঘোরা</p>
+                    </div>
+                    <div id="tooltip" class="tooltip">District</div>
+                    <div id="svg-wrapper"></div>
+                </div>
+
+                <div class="action-buttons" data-html2canvas-ignore>
+                    <button class="btn-region" id="btn-uttor">উত্তরবঙ্গ</button>
+                    <button class="btn-region" id="btn-dokkhin">দক্ষিণবঙ্গ</button>
+                    <button class="btn-clear">সব মুছুন</button>
+                    <button class="btn-download" id="btn-download">মানচিত্র ডাউনলোড</button>
+                </div>
+
+                <p class="export-credit">Made by <a href="https://www.facebook.com/Md.saharaiar.75/"
+                        target="_blank" rel="noopener noreferrer">MD Sahariar Hossain Mahi</a> &bull; Bangladesh Travel Tracker</p>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===================== SECTION 4: FOOTER ===================== -->
+    <footer class="site-footer">
+        <p>Made by <a class="profile-trigger" href="https://www.facebook.com/Md.saharaiar.75/"
+            target="_blank" rel="noopener noreferrer">MD Sahariar Hossain Mahi</a> &bull; Bangladesh Travel Tracker</p>
+        <p class="footer-sub">Bangladesh Travel Tracker &bull; Track every journey across 64 জেলা</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
