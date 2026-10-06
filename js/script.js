@@ -46,6 +46,72 @@ const progressText = document.getElementById('progress-text');
 const progressPercent = document.getElementById('progress-percent');
 const tooltip = document.getElementById('tooltip');
 const svgWrapper = document.getElementById('svg-wrapper');
+const visitorCount = document.getElementById('visitor-count');
+const visitorStatus = document.getElementById('visitor-status');
+const visitorWidget = document.getElementById('visitor-widget');
+
+// ===================== VISITOR COUNTER =====================
+async function initializeVisitorCounter() {
+    if (typeof Counter !== 'function') {
+        visitorStatus.textContent = 'সার্ভিস পাওয়া যাচ্ছে না';
+        visitorWidget.classList.add('is-offline');
+        return;
+    }
+
+    const counter = new Counter({ workspace: 'bangladesh-travel-map' });
+    const sessionKey = 'bangladeshTravelVisitCounted';
+    let alreadyCounted = false;
+    try {
+        alreadyCounted = sessionStorage.getItem(sessionKey) === 'true';
+    } catch {
+        // Continue without session de-duplication when storage is unavailable.
+    }
+
+    const renderCount = result => {
+        visitorCount.textContent = new Intl.NumberFormat('bn-BD').format(result.value);
+    };
+
+    const refreshCount = async () => {
+        const result = await counter.get('total-visits');
+        renderCount(result);
+    };
+
+    try {
+        const result = alreadyCounted
+            ? await counter.get('total-visits')
+            : await counter.up('total-visits');
+        renderCount(result);
+        visitorStatus.textContent = 'স্বয়ংক্রিয়';
+        visitorWidget.classList.remove('is-offline');
+
+        if (!alreadyCounted) {
+            try {
+                sessionStorage.setItem(sessionKey, 'true');
+            } catch {
+                // The counter still works when session storage is unavailable.
+            }
+        }
+
+        window.setInterval(() => {
+            if (document.visibilityState === 'visible') {
+                refreshCount().catch(() => {
+                    visitorStatus.textContent = 'আপডেট হচ্ছে না';
+                    visitorWidget.classList.add('is-offline');
+                });
+            }
+        }, 30000);
+    } catch (error) {
+        visitorStatus.textContent = error.status === 404
+            ? 'ওয়ার্কস্পেস নেই'
+            : error.status === 401 || error.status === 403
+                ? 'অনুমতি নেই'
+                : 'সংযোগ নেই';
+        visitorWidget.classList.add('is-offline');
+        console.error('Visitor counter could not be loaded:', error);
+    }
+}
+
+initializeVisitorCounter();
 
 // ===================== PROGRESS =====================
 function updateProgress() {
